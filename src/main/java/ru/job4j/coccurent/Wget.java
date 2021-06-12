@@ -14,7 +14,7 @@ public class Wget {
                             Thread.sleep(100);
                         }
                         System.out.println("\n\rLoading complete");
-                    } catch(InterruptedException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
