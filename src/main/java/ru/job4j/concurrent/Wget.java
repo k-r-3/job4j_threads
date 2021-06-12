@@ -1,4 +1,4 @@
-package ru.job4j.coccurent;
+package ru.job4j.concurrent;
 
 public class Wget {
 
