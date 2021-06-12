@@ -11,7 +11,7 @@ public class Wget {
                         while (index < 101) {
                             System.out.print("\rLoading : " + index  + "%");
                             index++;
-                            Thread.sleep(100);
+                            Thread.sleep(1000);
                         }
                         System.out.println("\n\rLoading complete");
                     } catch (InterruptedException e) {
