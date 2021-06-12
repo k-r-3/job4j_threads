@@ -8,12 +8,14 @@ public class ConsoleProgress implements Runnable {
             String loading = "Loading \\";
             String process = "process[.  ]";
             while (!Thread.currentThread().isInterrupted()) {
-                System.out.print("\r load : " + process + "["+loading+"]");
-                process = process.equals("process[.  ]") ? "process[.. ]" :
-                        process.equals("process[.. ]") ? "process[...]" : "process[.  ]";
-                loading = loading.equals("Loading \\") ? "Loading |" :
-                        loading.equals("Loading |") ? "Loading /" :
-                                loading.equals("Loading /") ? "Loading -" : "Loading \\";
+                System.out.print("\r load : " + process + "[" + loading + "]");
+                process = process.equals("process[.  ]") ? "process[.. ]"
+                        : process.equals("process[.. ]") ? "process[...]"
+                        : "process[.  ]";
+                loading = loading.equals("Loading \\") ? "Loading |"
+                        : loading.equals("Loading |") ? "Loading /"
+                        : loading.equals("Loading /") ? "Loading -"
+                        : "Loading \\";
                 Thread.sleep(500);
             }
         } catch (InterruptedException e) {
