@@ -1,4 +1,4 @@
-package ru.job4j.concurrent.ru.job4j.concurrent;
+package ru.job4j.concurrent;
 
 public class ConsoleProgress implements Runnable {
 

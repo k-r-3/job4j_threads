@@ -2,23 +2,26 @@ package ru.job4j.concurrent;
 
 public class Wget {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Thread loadThread = new Thread(
                 () -> {
-                    try {
-                        System.out.println("Start loading");
-                        int index = 0;
-                        while (index < 101) {
-                            System.out.print("\rLoading : " + index  + "%");
+                    System.out.println("Start loading");
+                    int index = 0;
+                    while (!Thread.currentThread().isInterrupted()) {
+                        try {
+                            System.out.print("\rLoading : " + index + "%");
                             index++;
                             Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            System.out.println(System.lineSeparator() + "Loading complete");
+                            Thread.currentThread().interrupt();
                         }
-                        System.out.println(System.lineSeparator() + "Loading complete");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
         );
         loadThread.start();
+        Thread.sleep(11100);
+        loadThread.interrupt();
+        loadThread.join();
     }
 }
