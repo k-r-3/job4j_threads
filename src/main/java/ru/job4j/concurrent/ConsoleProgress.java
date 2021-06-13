@@ -5,17 +5,10 @@ public class ConsoleProgress implements Runnable {
     @Override
     public void run() {
         try {
-            String loading = "Loading \\";
-            String process = "process[.  ]";
+            char[] loading = {'\\', '|', '-', '/'};
+            int i = 0;
             while (!Thread.currentThread().isInterrupted()) {
-                System.out.print("\r load : " + process + "[" + loading + "]");
-                process = process.equals("process[.  ]") ? "process[.. ]"
-                        : process.equals("process[.. ]") ? "process[...]"
-                        : "process[.  ]";
-                loading = loading.equals("Loading \\") ? "Loading |"
-                        : loading.equals("Loading |") ? "Loading /"
-                        : loading.equals("Loading /") ? "Loading -"
-                        : "Loading \\";
+                System.out.print("\r loading... " + loading[i++]);
                 Thread.sleep(500);
             }
         } catch (InterruptedException e) {
