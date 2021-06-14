@@ -1,27 +1,52 @@
 package ru.job4j.concurrent;
 
-public class Wget {
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
 
-    public static void main(String[] args) throws InterruptedException {
-        Thread loadThread = new Thread(
-                () -> {
-                    System.out.println("Start loading");
-                    int index = 0;
-                    while (!Thread.currentThread().isInterrupted()) {
-                        try {
-                            System.out.print("\rLoading : " + index + "%");
-                            index++;
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            System.out.println(System.lineSeparator() + "Loading complete");
-                            Thread.currentThread().interrupt();
-                        }
+public class Wget implements Runnable {
+    private static final long NANO_SEC = 1_000_000_000;
+    private static final long MILLI_SEC = 1_000_000;
+    private final String url;
+    private final int speed;
+
+    public Wget(String url, int speed) {
+        this.url = url;
+        this.speed = speed;
+    }
+
+    @Override
+    public void run() {
+        try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
+            byte[] dataBuffer = new byte[1024];
+            int bufferSize = dataBuffer.length;
+            int bytesRead;
+            double expectedTime = ((double) bufferSize / speed) * NANO_SEC;
+            int pause = 0;
+            long mark = System.nanoTime();
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                if (bytesRead == bufferSize) {
+                    long actualTime = System.nanoTime() - mark;
+                    mark = System.nanoTime();
+                    if (actualTime < expectedTime) {
+                        pause = (int) ((expectedTime - actualTime) / MILLI_SEC);
                     }
                 }
-        );
-        loadThread.start();
-        Thread.sleep(11100);
-        loadThread.interrupt();
-        loadThread.join();
+                Thread.sleep(pause);
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        String url = args[0];
+        int speed = Integer.parseInt(args[1]);
+        Thread wget = new Thread(new Wget(url, speed));
+        wget.start();
+        wget.join();
     }
 }
