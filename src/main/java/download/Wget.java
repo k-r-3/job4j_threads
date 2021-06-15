@@ -1,4 +1,4 @@
-package ru.job4j.concurrent;
+package download;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -19,7 +19,7 @@ public class Wget implements Runnable {
     @Override
     public void run() {
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
+             FileOutputStream fileOutputStream = new FileOutputStream(NameGenerator.genName(url))) {
             byte[] dataBuffer = new byte[1024];
             int bufferSize = dataBuffer.length;
             int bytesRead;
@@ -41,13 +41,5 @@ public class Wget implements Runnable {
             e.printStackTrace();
             Thread.currentThread().interrupt();
         }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        String url = args[0];
-        int speed = Integer.parseInt(args[1]);
-        Thread wget = new Thread(new Wget(url, speed));
-        wget.start();
-        wget.join();
     }
 }
