@@ -1,4 +1,4 @@
-package download;
+package ru.job4j.download;
 
 
 import java.io.IOException;
@@ -36,7 +36,8 @@ public class NameGenerator {
                         number = Integer.parseInt(m.group());
                     }
                     if (number != -1) {
-                        String newName = name.replace(String.valueOf(number), String.valueOf(number + 1));
+                        String newName = name.replace(String.valueOf(number),
+                                String.valueOf(number + 1));
                         return addNumber(newName);
                     }
                 return addNumber(file[0] + 0 + "." + file[1]);

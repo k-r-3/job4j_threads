@@ -1,4 +1,4 @@
-package download;
+package ru.job4j.download;
 
 public class ConsoleValidator implements Validator {
 

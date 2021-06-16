@@ -1,4 +1,4 @@
-package download;
+package ru.job4j.download;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
