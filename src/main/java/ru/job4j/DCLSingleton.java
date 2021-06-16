@@ -13,8 +13,7 @@ public final class DCLSingleton {
         }
         return inst;
     }
-
-
+    
     private DCLSingleton() {
     }
 }
