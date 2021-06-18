@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class User {
     private final int id;
-    private int amount;
+    private final int amount;
 
     public User(int id, int amount) {
         this.id = id;
