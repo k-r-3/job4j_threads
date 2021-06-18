@@ -72,9 +72,7 @@ public class UserStorageTest {
         public void run() {
             storage.add(new User(1, 100));
             storage.add(new User(2, 150));
-            storage.delete(new User(1, 100));
             System.out.println(Thread.currentThread().getName());
-            System.out.println(storage);
         }
     }
 
@@ -87,6 +85,7 @@ public class UserStorageTest {
         second.start();
         first.join();
         second.join();
+        storage.delete(new User(1, 100));
         assertThat(1, is(storage.size()));
     }
 
