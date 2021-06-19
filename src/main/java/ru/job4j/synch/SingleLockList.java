@@ -13,7 +13,7 @@ public class SingleLockList<T> implements Iterable<T> {
     private final List<T> list;
 
     public SingleLockList(List<T> list) {
-        this.list = (List) clone();
+        this.list = copy(list);
     }
 
     public synchronized void add(T value) {
@@ -22,11 +22,6 @@ public class SingleLockList<T> implements Iterable<T> {
 
     public synchronized T get(int index) {
         return copy(this.list).get(index);
-    }
-
-    @Override
-    protected synchronized Object clone() {
-        return copy(this.list);
     }
 
     @Override
