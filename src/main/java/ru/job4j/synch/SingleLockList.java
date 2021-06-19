@@ -4,12 +4,11 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 @ThreadSafe
-public class SingleLockList<T> implements Iterable<T>, Cloneable {
+public class SingleLockList<T> implements Iterable<T> {
     @GuardedBy("this")
     private final List<T> list;
 
@@ -18,17 +17,16 @@ public class SingleLockList<T> implements Iterable<T>, Cloneable {
     }
 
     public synchronized void add(T value) {
+        list.add(value);
     }
 
     public synchronized T get(int index) {
-        return null;
+        return copy(this.list).get(index);
     }
 
     @Override
     protected synchronized Object clone() {
-        List<T> rsl = new ArrayList<>();
-        Collections.copy(rsl, list);
-        return rsl;
+        return copy(this.list);
     }
 
     @Override
@@ -36,9 +34,13 @@ public class SingleLockList<T> implements Iterable<T>, Cloneable {
         return copy(this.list).iterator();
     }
 
-    private List<T> copy(List<T> list) {
-        List<T> copyList = new ArrayList<>();
-        copyList.addAll(list);
+    private synchronized List<T> copy(List<T> list) {
+        List<T> copyList;
+        if (list == null) {
+            copyList = new ArrayList<>();
+        } else {
+            copyList = new ArrayList<>(list);
+        }
         return copyList;
     }
 }
