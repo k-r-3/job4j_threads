@@ -12,21 +12,11 @@ public class UserStorage {
     private final Map<Integer, User> map = new HashMap<>();
 
     public synchronized boolean add(User user) {
-        User current = map.putIfAbsent(user.getId(), user);
-        if (current == null) {
-            return true;
-        } else {
-            map.put(current.getId(), current);
-            return false;
-        }
+        return map.putIfAbsent(user.getId(), user) == null;
     }
 
     public synchronized boolean update(User user) {
-        User current = map.replace(user.getId(), user);
-        if (current != null) {
-            return true;
-        }
-        return false;
+        return map.replace(user.getId(), user) != null;
     }
 
     public synchronized boolean delete(User user) {
