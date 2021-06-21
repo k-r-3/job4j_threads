@@ -28,7 +28,6 @@ public class SimpleBlockingQueue<T> {
             }
             queue.offer(value);
             this.notify();
-            System.out.println(queue);
         }
     }
 
@@ -43,7 +42,6 @@ public class SimpleBlockingQueue<T> {
             }
             T result = queue.poll();
             this.notify();
-            System.out.println(result);
             return result;
         }
     }
