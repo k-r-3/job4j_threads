@@ -14,7 +14,7 @@ public class SimpleBlockingQueueTest {
     public void whenPutAndGet() throws InterruptedException {
         CopyOnWriteArrayList<Integer> products = new CopyOnWriteArrayList<>();
         SimpleBlockingQueue<Integer> productions = new SimpleBlockingQueue<>(4);
-        Thread producer = new Thread (
+        Thread producer = new Thread(
                 () -> {
                         try {
                             for (int i = 0; i < 4; i++) {
@@ -26,7 +26,7 @@ public class SimpleBlockingQueueTest {
                         }
                 }
         );
-        Thread consumer = new Thread (
+        Thread consumer = new Thread(
                 () -> {
                     while ((productions.size() > 0) || !Thread.currentThread().isInterrupted()) {
                         try {
