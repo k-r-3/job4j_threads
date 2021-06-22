@@ -3,7 +3,7 @@ package ru.job4j.concurrent;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class CASCountTest {
 
@@ -12,7 +12,7 @@ public class CASCountTest {
         CASCount count = new CASCount(-1);
         Thread first = new Thread (
                 () -> {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 2; i++) {
                         count.increment();
                     }
                 }
@@ -20,7 +20,7 @@ public class CASCountTest {
         );
         Thread second = new Thread (
                 () -> {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 1; i++) {
                         count.increment();
                     }
                 }
@@ -31,7 +31,7 @@ public class CASCountTest {
         first.join();
         second.join();
         count.increment();
-        assertThat(count.get(), is(6));
+        assertThat(count.get(), is(3));
     }
 
 }
