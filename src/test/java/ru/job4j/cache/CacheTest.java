@@ -60,4 +60,16 @@ public class CacheTest {
         cache.update(cache.get(0));
         assertThat(cache.get(first.getId()).getVersion(), is(2));
     }
+
+    @Test(expected = OptimisticException.class)
+    public void whenUpdateThenException() {
+        Cache cache = new Cache();
+        Base first = new Base(0, 0);
+        cache.add(first);
+        cache.get(0).setName("element");
+        cache.update(cache.get(0));
+        first.setName("element");
+        cache.update(first);
+        cache.update(cache.get(0));
+    }
 }
