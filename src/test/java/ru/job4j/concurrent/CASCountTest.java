@@ -10,7 +10,7 @@ public class CASCountTest {
     @Test
     public void whenIncrement() throws InterruptedException {
         CASCount count = new CASCount(-1);
-        Thread first = new Thread (
+        Thread first = new Thread(
                 () -> {
                     for (int i = 0; i < 2; i++) {
                         count.increment();
@@ -18,7 +18,7 @@ public class CASCountTest {
                 }
 
         );
-        Thread second = new Thread (
+        Thread second = new Thread(
                 () -> {
                     for (int i = 0; i < 1; i++) {
                         count.increment();
