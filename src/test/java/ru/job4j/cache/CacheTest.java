@@ -70,6 +70,5 @@ public class CacheTest {
         cache.update(cache.get(0));
         first.setName("element");
         cache.update(first);
-        cache.update(cache.get(0));
     }
 }
