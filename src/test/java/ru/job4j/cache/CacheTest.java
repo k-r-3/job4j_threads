@@ -40,21 +40,24 @@ public class CacheTest {
     }
 
     @Test
-    public void whenUpdate() {
+    public void whenUpdateOnce() {
         Cache cache = new Cache();
-        Base first = new Base(1, 0);
+        Base first = new Base(0, 0);
         cache.add(first);
-        cache.update(first);
+        cache.get(0).setName("element");
+        cache.update(cache.get(0));
         assertThat(cache.get(first.getId()).getVersion(), is(1));
     }
 
-    @Test(expected = OptimisticException.class)
-    public void whenUpdateException() {
+    @Test
+    public void whenUpdateTwice() {
         Cache cache = new Cache();
-        Base first = new Base(1, 0);
+        Base first = new Base(0, 0);
         cache.add(first);
-        cache.update(first);
-        cache.update(first);
+        cache.get(0).setName("element");
+        cache.update(cache.get(0));
+        cache.get(0).setName("element 2");
+        cache.update(cache.get(0));
+        assertThat(cache.get(first.getId()).getVersion(), is(2));
     }
-
 }
