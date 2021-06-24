@@ -8,18 +8,15 @@ import java.util.List;
 public class ThreadPool {
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks;
-    private int capacity;
 
     public ThreadPool(int capacity) {
-        this.capacity = capacity;
         tasks = new SimpleBlockingQueue<>(capacity);
+        initThreads();
     }
 
     public void work(Runnable job) {
         try {
-            if (tasks.size() < capacity) {
                 tasks.offer(job);
-            }
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -27,8 +24,8 @@ public class ThreadPool {
     }
 
     public void shutdown() {
-        for (int i = 0; i < threads.size(); i++) {
-            threads.get(i).interrupt();
+        for (Thread thread : threads) {
+            thread.interrupt();
         }
     }
 
@@ -37,12 +34,12 @@ public class ThreadPool {
         for (int i = 0; i < size; i++) {
             threads.add(new Thread(
                     () -> {
-                        for (int j = 0; j < tasks.size(); j++) {
-                            try {
-                                tasks.poll().run();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            while (!Thread.currentThread().isInterrupted()) {
+                                try {
+                                    tasks.poll().run();
+                                } catch (InterruptedException e) {
+                                    Thread.currentThread().interrupt();
+                                }
                         }
                     }
             ));
@@ -50,7 +47,6 @@ public class ThreadPool {
     }
 
     public void execute() {
-        initThreads();
         try {
             for (Thread thread : threads) {
                 thread.start();

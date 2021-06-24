@@ -34,17 +34,4 @@ public class ThreadPoolTest {
         pool.shutdown();
         assertThat(count.get(), is(3));
     }
-
-    @Test
-    public void whenCapacityLessThenResultLess() {
-        ThreadPool pool = new ThreadPool(3);
-        pool.work(new Task());
-        pool.work(new Task());
-        pool.work(new Task());
-        pool.work(new Task());
-        pool.execute();
-        pool.shutdown();
-        assertThat(count.get(), is(3));
-    }
-
 }
