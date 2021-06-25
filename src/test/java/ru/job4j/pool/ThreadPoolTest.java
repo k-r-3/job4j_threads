@@ -25,7 +25,7 @@ public class ThreadPoolTest {
     }
 
     @Test
-    public void whenAddInPool() {
+    public void whenAddInPool() throws InterruptedException {
         ThreadPool pool = new ThreadPool(3);
         pool.work(new Task());
         pool.work(new Task());
