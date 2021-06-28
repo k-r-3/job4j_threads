@@ -44,7 +44,6 @@ public class ForkJoinSearch<T> extends RecursiveTask<Integer> {
         return first;
     }
 
-
     public static int search(Object[] array, Object key) {
         ForkJoinSearch<Object> fork = new ForkJoinSearch<>(array, key,
                 0, array.length - 1);
