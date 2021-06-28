@@ -3,7 +3,6 @@ package ru.job4j.pool;
 import org.junit.Test;
 
 import java.util.*;
-import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.core.Is.is;
@@ -12,52 +11,40 @@ import static org.junit.Assert.*;
 public class ForkJoinSearchTest {
 
     @Test
-    public void whenBinarySearch() {
+    public void whenIntegerPresent() {
         Integer[] array = Arrays.stream(
                 IntStream.range(1, 1000).toArray())
                 .boxed()
                 .toArray(Integer[]::new);
-        int expected = ForkJoinSearch.search(array, 356, (Comparator.comparingInt(o -> (int) o)));
+        int expected = ForkJoinSearch.search(array, 356);
         assertThat(355, is(expected));
     }
 
     @Test
-    public void whenLinearSearch() {
+    public void whenIntegerNotPresent() {
         Integer[] array = Arrays.stream(
-                IntStream.range(1, 11).toArray())
+                IntStream.range(1, 1000).toArray())
                 .boxed()
                 .toArray(Integer[]::new);
-        ForkJoinSearch<Integer> search = new ForkJoinSearch<>(array, 3,
-                0, array.length - 1, Integer::compare);
-        ForkJoinPool pool = new ForkJoinPool();
-        int expected = pool.invoke(search);
-        int active = pool.getActiveThreadCount();
-        assertThat(active <= 1, is(true));
-        assertThat(2, is(expected));
-    }
-
-    @Test
-    public void whenNotSortBinarySearch() {
-        List<Integer> list = Arrays.asList(Arrays.stream(
-                IntStream.range(1, 110).toArray())
-                .boxed()
-                .toArray(Integer[]::new));
-        Collections.shuffle(list);
-        Object[] array = list.toArray();
-        int expected = ForkJoinSearch.search(array, 5, Comparator.comparingInt(o -> (int) o));
+        int expected = ForkJoinSearch.search(array, 0);
         assertThat(-1, is(expected));
     }
 
     @Test
-    public void whenNotSortLinearSearch() {
-        List<Integer> list = Arrays.asList(Arrays.stream(
-                IntStream.range(1, 11).toArray())
-                .boxed()
-                .toArray(Integer[]::new));
-        Collections.shuffle(list);
-        Object[] array = list.toArray();
-        int expected = ForkJoinSearch.search(array, 5, Comparator.comparingInt(o -> (int) o));
-        assertThat(expected != -1, is(true));
+    public void whenStringPresent() {
+        String[] array = ("The fork/join framework is an implementation"
+                + " of the ExecutorService interface that helps you take"
+                + " advantage of multiple processors.").split(" ");
+        int expected = ForkJoinSearch.search(array, "fork/join");
+        assertThat(1, is(expected));
     }
 
+    @Test
+    public void whenStringNotPresent() {
+        String[] array = ("The fork/join framework is an implementation"
+                + " of the ExecutorService interface that helps you take"
+                + " advantage of multiple processors.").split(" ");
+        int expected = ForkJoinSearch.search(array, "ForkJoinPool");
+        assertThat(-1, is(expected));
+    }
 }
