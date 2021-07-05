@@ -1,7 +1,7 @@
 public class Trigger {
 
     public String hello() {
-        return "Hello, World!!";
+        return "Hello, World!!(Привет, мир!)";
     }
 
     public int check() {

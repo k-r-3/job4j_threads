@@ -8,7 +8,7 @@ public class TriggerTest {
     @Test
     public void whenTrigger() {
         Trigger trigger = new Trigger();
-        String exp = "Hello, World!!";
+        String exp = "Hello, World!!(Привет, мир!)";
         assertThat(exp, is(trigger.hello()));
     }
 
